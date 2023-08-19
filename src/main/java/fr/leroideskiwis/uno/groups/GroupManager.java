@@ -5,17 +5,15 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 public class GroupManager {
 
-    private List<Group> groups = new ArrayList<>();
+    private final List<Group> groups = new ArrayList<>();
 
     public void createGroup(TextChannel textChannel, Menu menu, User owner, List<User> users){
-        Group group = new Group();
-        group.add(owner);
+        Group group = new Group(owner);
         group.add(users);
         groups.add(group);
         group.sendEmbed(textChannel, menu);
@@ -25,8 +23,8 @@ public class GroupManager {
         return groups.stream().filter(group -> group.isInTheGroup(user)).findAny();
     }
 
-    public void deleteGroup(User user){
-        retrieveGroup(user).ifPresent(group -> groups.remove(group));
+    public void deleteGroup(Group group){
+        groups.remove(group);
     }
 
 }

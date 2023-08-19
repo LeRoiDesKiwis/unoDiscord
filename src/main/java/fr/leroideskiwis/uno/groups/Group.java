@@ -11,29 +11,36 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 
 import java.awt.Color;
-import java.util.Collections;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public class Group {
 
     private Map<User, InviteStatus> players = new HashMap<>();
+    private boolean started;
+
+    private User owner;
     private Message invite;
 
-    private List<User> readyUsers(){
-        return players.keySet().stream().filter(user -> players.get(user) != InviteStatus.IDLE).collect(Collectors.toList());
+    public Group(User owner){
+        this.owner = owner;
+    }
+
+    private List<User> readyUsers(boolean includesOwner){
+        List<User> players1 = players.keySet().stream().filter(user -> players.get(user) == InviteStatus.ACCEPTED).collect(Collectors.toList());
+        if(includesOwner) players1.add(owner);
+        return players1;
     }
 
     public void add(User user){
-        add(Collections.singletonList(user));
+        players.put(user, InviteStatus.WAITING);
     }
     
     public void add(List<User> users){
-        users.forEach(user -> players.put(user, InviteStatus.IDLE));
+        users.forEach(this::add);
     }
 
     public void accept(User user){
@@ -49,11 +56,12 @@ public class Group {
     }
 
     private MessageEmbed createEmbed(){
+        if(started) return new EmbedBuilder().setColor(Color.GRAY).setTitle("Partie commencee").build();
         Color[] colors = {Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN};
 
-        int color = ((colors.length-1)*readyUsers().size())/players.size();
+        int color = ((colors.length-1)*(readyUsers(false).size()))/(players.size());
         EmbedBuilder builder = new EmbedBuilder().setColor(colors[color]);
-        builder.setTitle("Groupe de "+players.size()+" joueurs");
+        builder.setTitle(String.format("Groupe de %d joueur(s) (cree par %s)", players.size()+1, owner.getName()));
         for(Map.Entry<User, InviteStatus> player : players.entrySet()){
             User user = player.getKey();
             builder.addField(user.getName()+"#"+ user.getDiscriminator(), player.getValue().toString(), false);
@@ -73,14 +81,16 @@ public class Group {
     }
 
     public boolean isInTheGroup(User user){
-        return players.containsKey(user);
+        return user.equals(owner) || players.containsKey(user);
     }
 
     public Game toGame() {
-        return new Game(players.keySet().stream().map(Player::new).collect(Collectors.toList()));
+        this.started = true;
+        return new Game(invite.getTextChannel(), readyUsers(true).stream().map(Player::new).collect(Collectors.toList()));
     }
 
-    public void handleClick(String id, GameManager gameManager, User user) {
+    public void handleClick(String id, GroupManager groupManager, GameManager gameManager, User user) {
+        System.out.println(id);
         switch(id){
             case "accept":
                 accept(user);
@@ -89,7 +99,7 @@ public class Group {
                 deny(user);
                 break;
             case "start":
-                gameManager.startGame(this);
+                if(user.equals(owner)) gameManager.startGame(this, groupManager);
             default:
                 break;
         }

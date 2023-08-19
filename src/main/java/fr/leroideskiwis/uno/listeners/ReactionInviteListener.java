@@ -29,7 +29,7 @@ public class ReactionInviteListener extends ListenerAdapter {
     public void onMessageReactionAdd(@Nonnull MessageReactionAddEvent event) {
         User user = event.getUser();
         Optional<Group> groupOpt = groupManager.retrieveGroup(user);
-        if(!groupOpt.isPresent()) return;
+        if(groupOpt.isEmpty()) return;
 
         Group group = groupOpt.get();
         if(!group.isMessage(event.getMessageIdLong())) return;
@@ -37,8 +37,6 @@ public class ReactionInviteListener extends ListenerAdapter {
         Menu menu = menuManager.getById("invit");
 
         MessageReaction.ReactionEmote reaction = event.getReactionEmote();
-        String id = menu.retrieveDescription(reaction);
-
-        group.handleClick(id, gameManager, user);
+        menu.retrieveDescription(reaction).ifPresent(id -> group.handleClick(id, groupManager, gameManager, user));
     }
 }

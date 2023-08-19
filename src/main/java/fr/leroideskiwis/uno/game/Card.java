@@ -1,4 +1,4 @@
-﻿package fr.leroideskiwis.uno.game;
+package fr.leroideskiwis.uno.game;
 
 public class Card {
     private int number;

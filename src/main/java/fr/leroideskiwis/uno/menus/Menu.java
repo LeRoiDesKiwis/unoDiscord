@@ -4,8 +4,8 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageReaction;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 public class Menu {
 
@@ -17,20 +17,16 @@ public class Menu {
         }
     }
 
-    public void addEmote(String emote, String description){
-        menu.put(emote, description);
-    }
-
     public void addEmotes(Message message){
         menu.forEach((emote, desc) -> message.addReaction(emote).queue());
     }
 
-    public String retrieveDescription(MessageReaction.ReactionEmote emote){
+    public Optional<String> retrieveDescription(MessageReaction.ReactionEmote emote){
         String name = emote.getName();
-        if(menu.containsKey(name)) return menu.get(name);
+        if(menu.containsKey(name)) return Optional.of(menu.get(name));
         String codepoints = emote.getAsCodepoints();
-        if(menu.containsKey(codepoints)) return menu.get(codepoints);
-        return "null";
+        if(menu.containsKey(codepoints)) return Optional.of(menu.get(codepoints));
+        return Optional.empty();
     }
 
     public static class MenuPart{

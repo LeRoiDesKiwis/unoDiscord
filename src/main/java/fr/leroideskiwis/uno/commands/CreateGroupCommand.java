@@ -7,11 +7,9 @@ import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
-import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.CommandData;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,7 +44,7 @@ public class CreateGroupCommand implements Command {
         TextChannel textChannel = event.getTextChannel();
         mentionedUsers.remove(event.getAuthor());
 
-        if(mentionedUsers.size() < 1) {
+        if(mentionedUsers.isEmpty()) {
             MessageHandler.sendError(textChannel, "Vous devez entrer un nom minimum !");
             return;
         }
