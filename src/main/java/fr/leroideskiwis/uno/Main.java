@@ -1,8 +1,9 @@
 package fr.leroideskiwis.uno;
 
 import fr.leroideskiwis.uno.commands.CreateGroupCommand;
-import fr.leroideskiwis.uno.game.GameManager;
-import fr.leroideskiwis.uno.groups.GroupManager;
+import fr.leroideskiwis.uno.commands.GetDeckCommand;
+import fr.leroideskiwis.uno.managers.GameManager;
+import fr.leroideskiwis.uno.managers.GroupManager;
 import fr.leroideskiwis.uno.listeners.MessageListener;
 import fr.leroideskiwis.uno.listeners.ReactionGameListener;
 import fr.leroideskiwis.uno.listeners.ReactionInviteListener;
@@ -18,9 +19,9 @@ public class Main extends ListenerAdapter {
 
     private JDA jda;
     private final CommandManager commandManager = new CommandManager();
-    private GroupManager groupManager = new GroupManager();
-    private MenuManager menuManager = new MenuManager();
-    private GameManager gameManager = new GameManager();
+    private final GroupManager groupManager = new GroupManager();
+    private final MenuManager menuManager = new MenuManager();
+    private final GameManager gameManager = new GameManager();
 
     public void start(String... args) throws LoginException {
         this.jda = JDABuilder
@@ -38,5 +39,6 @@ public class Main extends ListenerAdapter {
         jda.addEventListener(new ReactionGameListener(menuManager, gameManager));
         jda.addEventListener(this);
         commandManager.registerCommand(new CreateGroupCommand(groupManager, menuManager));
+        commandManager.registerCommand(new GetDeckCommand(gameManager));
     }
 }

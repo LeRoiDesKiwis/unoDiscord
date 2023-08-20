@@ -1,6 +1,6 @@
 package fr.leroideskiwis.uno.commands;
 
-import fr.leroideskiwis.uno.groups.GroupManager;
+import fr.leroideskiwis.uno.managers.GroupManager;
 import fr.leroideskiwis.uno.menus.MenuManager;
 import fr.leroideskiwis.uno.util.MessageHandler;
 import net.dv8tion.jda.api.Permission;

@@ -1,8 +1,9 @@
 package fr.leroideskiwis.uno.groups;
 
 import fr.leroideskiwis.uno.game.Game;
-import fr.leroideskiwis.uno.game.GameManager;
+import fr.leroideskiwis.uno.managers.GameManager;
 import fr.leroideskiwis.uno.game.Player;
+import fr.leroideskiwis.uno.managers.GroupManager;
 import fr.leroideskiwis.uno.menus.Menu;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -19,10 +20,10 @@ import java.util.stream.Collectors;
 
 public class Group {
 
-    private Map<User, InviteStatus> players = new HashMap<>();
+    private final Map<User, InviteStatus> players = new HashMap<>();
     private boolean started;
 
-    private User owner;
+    private final User owner;
     private Message invite;
 
     public Group(User owner){

@@ -1,10 +1,12 @@
-package fr.leroideskiwis.uno.game;
+package fr.leroideskiwis.uno.managers;
 
+import fr.leroideskiwis.uno.game.Game;
 import fr.leroideskiwis.uno.groups.Group;
-import fr.leroideskiwis.uno.groups.GroupManager;
+import net.dv8tion.jda.api.entities.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class GameManager {
 
@@ -16,6 +18,10 @@ public class GameManager {
         game.startGame();
         groupManager.deleteGroup(group);
 
+    }
+
+    public Optional<Game> retrieveGame(User user){
+        return games.stream().filter(game -> game.hasUser(user)).findAny();
     }
 
 }

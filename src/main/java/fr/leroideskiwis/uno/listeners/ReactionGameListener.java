@@ -1,6 +1,6 @@
 package fr.leroideskiwis.uno.listeners;
 
-import fr.leroideskiwis.uno.game.GameManager;
+import fr.leroideskiwis.uno.managers.GameManager;
 import fr.leroideskiwis.uno.menus.MenuManager;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;

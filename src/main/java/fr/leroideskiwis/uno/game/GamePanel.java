@@ -1,14 +1,13 @@
-﻿package fr.leroideskiwis.uno.game;
+package fr.leroideskiwis.uno.game;
 
-import fr.leroideskiwis.uno.groups.InviteStatus;
 import fr.leroideskiwis.uno.menus.Menu;
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageChannel;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 
 public class GamePanel {
 
-    private boolean dm;
-    private Deck deck;
     private Message message;
     private Game game;
 
@@ -16,13 +15,10 @@ public class GamePanel {
         EmbedBuilder embedBuilder = new EmbedBuilder();
         game.completeEmbed(embedBuilder);
 
-        if(dm) deck.stream().forEach(card -> embedBuilder.addField(card.toEmote(), card.toString(), false));
-
         return embedBuilder.build();
     }
 
     public void sendEmbed(MessageChannel messageChannel, Menu menu){
-        this.dm = messageChannel instanceof PrivateChannel;
         messageChannel.sendMessage(createEmbed()).queue(msg -> {
             message = msg;
             menu.addEmotes(message);

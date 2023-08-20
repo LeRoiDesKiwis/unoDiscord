@@ -1,8 +1,8 @@
 package fr.leroideskiwis.uno.listeners;
 
-import fr.leroideskiwis.uno.game.GameManager;
+import fr.leroideskiwis.uno.managers.GameManager;
 import fr.leroideskiwis.uno.groups.Group;
-import fr.leroideskiwis.uno.groups.GroupManager;
+import fr.leroideskiwis.uno.managers.GroupManager;
 import fr.leroideskiwis.uno.menus.Menu;
 import fr.leroideskiwis.uno.menus.MenuManager;
 import net.dv8tion.jda.api.entities.MessageReaction;

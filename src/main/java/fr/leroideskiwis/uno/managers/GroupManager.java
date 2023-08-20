@@ -1,5 +1,6 @@
-package fr.leroideskiwis.uno.groups;
+package fr.leroideskiwis.uno.managers;
 
+import fr.leroideskiwis.uno.groups.Group;
 import fr.leroideskiwis.uno.menus.Menu;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.User;
