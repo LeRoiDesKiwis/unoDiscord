@@ -107,4 +107,8 @@ public class Group {
 
         updateEmbed();
     }
+
+    public boolean canStart() {
+        return !readyUsers(false).isEmpty();
+    }
 }
